@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finch's Gardening CMS - Content Manager</title>
+    <title>Finch's Gardening CMS - Complete Content Manager</title>
     <style>
         * {
             margin: 0;
@@ -173,50 +173,14 @@
             display: none;
         }
 
-        .service-item {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #4A8C5F;
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
         }
 
-        .testimonial-item {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid #F2C94C;
-        }
-
-        .add-btn {
-            background: #F2C94C;
-            color: #333;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            margin-top: 1rem;
-        }
-
-        .delete-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            float: right;
-        }
-
-        .color-picker {
-            width: 60px;
-            height: 40px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+        .full-width {
+            grid-column: 1 / -1;
         }
 
         .preview-btn {
@@ -236,14 +200,7 @@
             height: 12px;
             border-radius: 50%;
             margin-right: 0.5rem;
-        }
-
-        .status-connected {
             background: #28a745;
-        }
-
-        .status-disconnected {
-            background: #dc3545;
         }
 
         @media (max-width: 768px) {
@@ -258,13 +215,17 @@
             .nav-btn {
                 text-align: center;
             }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header class="cms-header">
-        <h1>🌿 Finch's Gardening Services - Content Manager</h1>
-        <p><span class="status-indicator status-connected"></span>Connected to GitHub - Changes will automatically update your website</p>
+        <h1>🌿 Finch's Gardening Services - Complete Content Manager</h1>
+        <p><span class="status-indicator"></span>Connected to GitHub - Changes automatically update your live website!</p>
     </header>
 
     <div class="cms-container">
@@ -272,9 +233,6 @@
             <div class="nav-buttons">
                 <button class="nav-btn active" onclick="showSection('homepage')">🏠 Homepage</button>
                 <button class="nav-btn" onclick="showSection('about')">👥 About</button>
-                <button class="nav-btn" onclick="showSection('services')">🛠️ Services</button>
-                <button class="nav-btn" onclick="showSection('portfolio')">📸 Portfolio</button>
-                <button class="nav-btn" onclick="showSection('testimonials')">💬 Testimonials</button>
                 <button class="nav-btn" onclick="showSection('contact')">📞 Contact</button>
                 <button class="nav-btn" onclick="showSection('settings')">⚙️ Settings</button>
             </div>
@@ -285,168 +243,110 @@
             <h2 class="section-title">Homepage Content</h2>
             <div class="success-message" id="homepage-success">Changes saved successfully!</div>
             
-            <div class="form-group">
-                <label class="form-label">Hero Title</label>
-                <input type="text" class="form-input" id="hero-title" value="Transforming Gardens, One Lawn at a Time">
-            </div>
+            <div class="content-grid">
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Hero Title</label>
+                        <input type="text" class="form-input" id="hero-title" value="Transforming Gardens, One Lawn at a Time">
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">Hero Subtitle</label>
-                <input type="text" class="form-input" id="hero-subtitle" value="Professional gardening services in Surrey and surrounding areas">
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Hero Subtitle</label>
+                        <input type="text" class="form-input" id="hero-subtitle" value="Professional gardening services in Surrey and surrounding areas">
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">Hero Image</label>
-                <div class="image-upload" onclick="document.getElementById('hero-image').click()">
-                    <p>Click to upload new hero image</p>
-                    <input type="file" id="hero-image" style="display: none;" accept="image/*">
-                    <img id="hero-preview" class="image-preview" src="" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Welcome Section Title</label>
+                        <input type="text" class="form-input" id="intro-title" value="Welcome to Finch's Gardening Services">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Hero Background Image</label>
+                        <div class="image-upload" onclick="document.getElementById('hero-image').click()">
+                            <p>Click to upload new hero image</p>
+                            <input type="file" id="hero-image" style="display: none;" accept="image/*" onchange="handleImageUpload(this, 'images/hero-garden.jpg')">
+                            <img id="hero-preview" class="image-preview" src="" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="full-width">
+                    <div class="form-group">
+                        <label class="form-label">Welcome Section Content</label>
+                        <textarea class="form-input form-textarea" id="intro-content">At Finch's Gardening Services, we're passionate about creating and maintaining beautiful outdoor spaces. With over 15 years of experience serving Surrey and the surrounding areas, our team of skilled gardeners provides professional, reliable, and eco-friendly gardening solutions tailored to your specific needs.
+
+Whether you need regular lawn maintenance, a complete garden transformation, or seasonal clean-ups, we have the expertise and dedication to exceed your expectations and help your garden thrive.</textarea>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Introduction Title</label>
-                <input type="text" class="form-input" id="intro-title" value="Welcome to Finch's Gardening Services">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Introduction Content</label>
-                <textarea class="form-input form-textarea" id="intro-content">At Finch's Gardening Services, we're passionate about creating and maintaining beautiful outdoor spaces. With over 15 years of experience serving Surrey and the surrounding areas, our team of skilled gardeners provides professional, reliable, and eco-friendly gardening solutions tailored to your specific needs.</textarea>
-            </div>
-
             <button class="save-btn" onclick="saveHomepage()">💾 Save Homepage Changes</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Site</button>
+            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
         </section>
         <!-- About Section -->
         <section id="about" class="cms-section">
             <h2 class="section-title">About Page Content</h2>
             <div class="success-message" id="about-success">Changes saved successfully!</div>
             
-            <div class="form-group">
-                <label class="form-label">Our Story Title</label>
-                <input type="text" class="form-input" id="story-title" value="Our Story">
-            </div>
+            <div class="content-grid">
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Page Title</label>
+                        <input type="text" class="form-input" id="about-title" value="About Finch's Gardening Services">
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">Our Story Content</label>
-                <textarea class="form-input form-textarea" id="story-content">Finch's Gardening Services was founded in 2010 by James Finch, a lifelong gardening enthusiast with a passion for creating beautiful outdoor spaces. What began as a one-man operation has grown into a trusted team of skilled gardeners serving Surrey and the surrounding areas.</textarea>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">Our Story Section Title</label>
+                        <input type="text" class="form-input" id="story-title" value="Our Story">
+                    </div>
 
-            <div class="form-group">
-                <label class="form-label">Team Photo</label>
-                <div class="image-upload" onclick="document.getElementById('team-image').click()">
-                    <p>Click to upload team photo</p>
-                    <input type="file" id="team-image" style="display: none;" accept="image/*">
-                    <img id="team-preview" class="image-preview" src="" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Years of Experience</label>
+                        <input type="text" class="form-input" id="experience-years" value="15+ years">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Founder Name</label>
+                        <input type="text" class="form-input" id="founder-name" value="James Finch">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Team Photo</label>
+                        <div class="image-upload" onclick="document.getElementById('team-image').click()">
+                            <p>Click to upload team photo</p>
+                            <input type="file" id="team-image" style="display: none;" accept="image/*" onchange="handleImageUpload(this, 'images/team-photo.jpg')">
+                            <img id="team-preview" class="image-preview" src="" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="full-width">
+                    <div class="form-group">
+                        <label class="form-label">Our Story Content</label>
+                        <textarea class="form-input form-textarea" id="story-content">Finch's Gardening Services was founded in 2010 by James Finch, a lifelong gardening enthusiast with a passion for creating beautiful outdoor spaces. What began as a one-man operation has grown into a trusted team of skilled gardeners serving Surrey and the surrounding areas.
+
+Our commitment to excellence, attention to detail, and eco-friendly practices has earned us a reputation as one of the most reliable gardening services in the region. We take pride in transforming ordinary gardens into extraordinary outdoor spaces that our clients can enjoy year-round.</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Why Choose Us Section</label>
+                        <textarea class="form-input form-textarea" id="why-choose-content">• 15+ years of professional experience
+• Fully insured and licensed
+• Eco-friendly gardening practices
+• Reliable and punctual service
+• Competitive pricing
+• Free consultations and quotes
+• Local Surrey-based team
+• Satisfaction guaranteed</textarea>
+                    </div>
                 </div>
             </div>
 
             <button class="save-btn" onclick="saveAbout()">💾 Save About Changes</button>
-        </section>
-        
-        <!-- Services Section -->
-        <section id="services" class="cms-section">
-            <h2 class="section-title">Services Management</h2>
-            <div class="success-message" id="services-success">Changes saved successfully!</div>
-            
-            <div id="services-list">
-                <div class="service-item">
-                    <button class="delete-btn" onclick="deleteService(this)">🗑️ Delete</button>
-                    <div class="form-group">
-                        <label class="form-label">Service Name</label>
-                        <input type="text" class="form-input" value="Lawn Mowing & Edging">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-input">Keep your lawn looking pristine with our professional mowing and edging services, creating clean, defined borders and a perfectly manicured appearance.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Service Icon</label>
-                        <div class="image-upload" onclick="this.querySelector('input').click()">
-                            <p>Click to upload service icon</p>
-                            <input type="file" style="display: none;" accept="image/*">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="add-btn" onclick="addService()">➕ Add New Service</button>
-            <button class="save-btn" onclick="saveServices()">💾 Save All Services</button>
-        </section>
-
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="cms-section">
-            <h2 class="section-title">Portfolio Management</h2>
-            <div class="success-message" id="portfolio-success">Changes saved successfully!</div>
-            
-            <div id="portfolio-list">
-                <div class="service-item">
-                    <button class="delete-btn" onclick="deletePortfolio(this)">🗑️ Delete</button>
-                    <div class="form-group">
-                        <label class="form-label">Project Name</label>
-                        <input type="text" class="form-input" value="Garden Transformation">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Location</label>
-                        <input type="text" class="form-input" value="Leatherhead, Surrey">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-input">Complete garden makeover including lawn renovation, flower bed design, and pathway installation.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Before Image</label>
-                        <div class="image-upload" onclick="this.querySelector('input').click()">
-                            <p>Click to upload before image</p>
-                            <input type="file" style="display: none;" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">After Image</label>
-                        <div class="image-upload" onclick="this.querySelector('input').click()">
-                            <p>Click to upload after image</p>
-                            <input type="file" style="display: none;" accept="image/*">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="add-btn" onclick="addPortfolio()">➕ Add New Project</button>
-            <button class="save-btn" onclick="savePortfolio()">💾 Save Portfolio</button>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="cms-section">
-            <h2 class="section-title">Customer Testimonials</h2>
-            <div class="success-message" id="testimonials-success">Changes saved successfully!</div>
-            
-            <div id="testimonials-list">
-                <div class="testimonial-item">
-                    <button class="delete-btn" onclick="deleteTestimonial(this)">🗑️ Delete</button>
-                    <div class="form-group">
-                        <label class="form-label">Customer Name</label>
-                        <input type="text" class="form-input" value="Sarah Johnson">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Location</label>
-                        <input type="text" class="form-input" value="Leatherhead, Surrey">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Testimonial</label>
-                        <textarea class="form-input">James and his team have been maintaining our garden for over three years now, and we couldn't be happier with their service. They're reliable, thorough, and always go the extra mile.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Customer Photo</label>
-                        <div class="image-upload" onclick="this.querySelector('input').click()">
-                            <p>Click to upload customer photo</p>
-                            <input type="file" style="display: none;" accept="image/*">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="add-btn" onclick="addTestimonial()">➕ Add New Testimonial</button>
-            <button class="save-btn" onclick="saveTestimonials()">💾 Save Testimonials</button>
         </section>
 
         <!-- Contact Section -->
@@ -454,272 +354,291 @@
             <h2 class="section-title">Contact Information</h2>
             <div class="success-message" id="contact-success">Changes saved successfully!</div>
             
-            <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="text" class="form-input" id="contact-phone" value="01234 567 890">
+            <div class="content-grid">
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-input" id="contact-phone" value="01234 567 890">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="contact-email" value="info@finchsgardening.co.uk">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Service Area</label>
+                        <input type="text" class="form-input" id="service-area" value="Surrey and surrounding areas">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Business Address</label>
+                        <textarea class="form-input" id="business-address">123 Garden Lane
+Leatherhead
+Surrey KT22 8AB
+United Kingdom</textarea>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Business Hours - Monday to Friday</label>
+                        <input type="text" class="form-input" id="hours-weekdays" value="8:00 AM - 6:00 PM">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Business Hours - Saturday</label>
+                        <input type="text" class="form-input" id="hours-saturday" value="9:00 AM - 4:00 PM">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Business Hours - Sunday</label>
+                        <input type="text" class="form-input" id="hours-sunday" value="Closed">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Emergency Contact</label>
+                        <input type="text" class="form-input" id="emergency-contact" value="Available for urgent garden emergencies">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" id="contact-email" value="info@finchsgardening.co.uk">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Service Area</label>
-                <input type="text" class="form-input" id="service-area" value="Surrey and surrounding areas">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Business Hours - Weekdays</label>
-                <input type="text" class="form-input" id="hours-weekdays" value="8:00 AM - 6:00 PM">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Business Hours - Saturday</label>
-                <input type="text" class="form-input" id="hours-saturday" value="9:00 AM - 4:00 PM">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Business Hours - Sunday</label>
-                <input type="text" class="form-input" id="hours-sunday" value="Closed">
-            </div>
-
-            <button class="save-btn" onclick="saveContact()">💾 Save Contact Info</button>
+            <button class="save-btn" onclick="saveContact()">💾 Save Contact Information</button>
         </section>
 
         <!-- Settings Section -->
         <section id="settings" class="cms-section">
-            <h2 class="section-title">Website Settings</h2>
+            <h2 class="section-title">Website Settings & Branding</h2>
             <div class="success-message" id="settings-success">Changes saved successfully!</div>
             
-            <div class="form-group">
-                <label class="form-label">Website Logo</label>
-                <div class="image-upload" onclick="document.getElementById('logo-image').click()">
-                    <p>Click to upload new logo</p>
-                    <input type="file" id="logo-image" style="display: none;" accept="image/*">
-                    <img id="logo-preview" class="image-preview" src="" style="display: none;">
+            <div class="content-grid">
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Website Logo</label>
+                        <div class="image-upload" onclick="document.getElementById('logo-image').click()">
+                            <p>Click to upload new logo</p>
+                            <input type="file" id="logo-image" style="display: none;" accept="image/*" onchange="handleImageUpload(this, 'images/finchs-logo.png')">
+                            <img id="logo-preview" class="image-preview" src="" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Primary Color (Main Green)</label>
+                        <input type="color" class="form-input" id="primary-color" value="#2A5D3C" style="height: 50px;">
+                        <span style="margin-left: 1rem; color: #666;">Used for headers and main elements</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Secondary Color (Light Green)</label>
+                        <input type="color" class="form-input" id="secondary-color" value="#4A8C5F" style="height: 50px;">
+                        <span style="margin-left: 1rem; color: #666;">Used for buttons and accents</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Accent Color (Yellow)</label>
+                        <input type="color" class="form-input" id="accent-color" value="#F2C94C" style="height: 50px;">
+                        <span style="margin-left: 1rem; color: #666;">Used for highlights and CTAs</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="form-group">
+                        <label class="form-label">Facebook Page URL</label>
+                        <input type="url" class="form-input" id="facebook-url" placeholder="https://facebook.com/finchsgardening">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Instagram Profile URL</label>
+                        <input type="url" class="form-input" id="instagram-url" placeholder="https://instagram.com/finchsgardening">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">TikTok Profile URL</label>
+                        <input type="url" class="form-input" id="tiktok-url" placeholder="https://tiktok.com/@finchsgardening">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn Profile URL</label>
+                        <input type="url" class="form-input" id="linkedin-url" placeholder="https://linkedin.com/company/finchsgardening">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Google My Business URL</label>
+                        <input type="url" class="form-input" id="google-business-url" placeholder="https://g.page/finchsgardening">
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Primary Color</label>
-                <input type="color" class="color-picker" id="primary-color" value="#2A5D3C">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Secondary Color</label>
-                <input type="color" class="color-picker" id="secondary-color" value="#4A8C5F">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Accent Color</label>
-                <input type="color" class="color-picker" id="accent-color" value="#F2C94C">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Facebook URL</label>
-                <input type="url" class="form-input" id="facebook-url" placeholder="https://facebook.com/yourpage">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Instagram URL</label>
-                <input type="url" class="form-input" id="instagram-url" placeholder="https://instagram.com/yourpage">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">TikTok URL</label>
-                <input type="url" class="form-input" id="tiktok-url" placeholder="https://tiktok.com/@yourpage">
-            </div>
-
-            <button class="save-btn" onclick="saveSettings( )">💾 Save Settings</button>
+            <button class="save-btn" onclick="saveSettings( )">💾 Save Website Settings</button>
         </section>
     </div>
-
     <script src="github-integration.js"></script>
     <script>
-        // Navigation functionality
+        // Navigation between sections
         function showSection(sectionId) {
-            document.querySelectorAll('.cms-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            // Hide all sections
+            const sections = document.querySelectorAll('.cms-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
             document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
             event.target.classList.add('active');
         }
 
         // Image preview functionality
-        function setupImagePreview(inputId, previewId) {
-            document.getElementById(inputId).addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const preview = document.getElementById(previewId);
-                        preview.src = e.target.result;
-                        preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
+        function setupImagePreviews() {
+            const imageInputs = document.querySelectorAll('input[type="file"]');
+            imageInputs.forEach(input => {
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Find the preview image in the same container
+                            const container = input.closest('.image-upload');
+                            let preview = container.querySelector('.image-preview');
+                            if (!preview) {
+                                preview = document.createElement('img');
+                                preview.className = 'image-preview';
+                                container.appendChild(preview);
+                            }
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
             });
         }
 
-        setupImagePreview('hero-image', 'hero-preview');
-        setupImagePreview('team-image', 'team-preview');
-        setupImagePreview('logo-image', 'logo-preview');
-
-        // Save functions
-        function saveHomepage() {
-            const data = {
-                heroTitle: document.getElementById('hero-title').value,
-                heroSubtitle: document.getElementById('hero-subtitle').value,
-                introTitle: document.getElementById('intro-title').value,
-                introContent: document.getElementById('intro-content').value
-            };
-            console.log('Saving homepage data:', data);
-            showSuccessMessage('homepage-success');
-        }
-
-        function saveAbout() {
-            const data = {
-                storyTitle: document.getElementById('story-title').value,
-                storyContent: document.getElementById('story-content').value
-            };
-            console.log('Saving about data:', data);
-            showSuccessMessage('about-success');
-        }
-
-        function saveServices() {
-            console.log('Saving services data');
-            showSuccessMessage('services-success');
-        }
-
-        function savePortfolio() {
-            console.log('Saving portfolio data');
-            showSuccessMessage('portfolio-success');
-        }
-
-        function saveTestimonials() {
-            console.log('Saving testimonials data');
-            showSuccessMessage('testimonials-success');
-        }
-
-        function saveContact() {
-            const data = {
-                phone: document.getElementById('contact-phone').value,
-                email: document.getElementById('contact-email').value,
-                serviceArea: document.getElementById('service-area').value,
-                hoursWeekdays: document.getElementById('hours-weekdays').value,
-                hoursSaturday: document.getElementById('hours-saturday').value,
-                hoursSunday: document.getElementById('hours-sunday').value
-            };
-            console.log('Saving contact data:', data);
-            showSuccessMessage('contact-success');
-        }
-
-        function saveSettings() {
-            const data = {
-                primaryColor: document.getElementById('primary-color').value,
-                secondaryColor: document.getElementById('secondary-color').value,
-                accentColor: document.getElementById('accent-color').value,
-                facebookUrl: document.getElementById('facebook-url').value,
-                instagramUrl: document.getElementById('instagram-url').value,
-                tiktokUrl: document.getElementById('tiktok-url').value
-            };
-            console.log('Saving settings data:', data);
-            showSuccessMessage('settings-success');
-        }
-
-        // Add new items functions
+        // Add new service
         function addService() {
             const servicesList = document.getElementById('services-list');
             const newService = document.createElement('div');
             newService.className = 'service-item';
             newService.innerHTML = `
                 <button class="delete-btn" onclick="deleteService(this)">🗑️ Delete</button>
-                <div class="form-group">
-                    <label class="form-label">Service Name</label>
-                    <input type="text" class="form-input" placeholder="Enter service name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-input" placeholder="Enter service description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Service Icon</label>
-                    <div class="image-upload" onclick="this.querySelector('input').click()">
-                        <p>Click to upload service icon</p>
-                        <input type="file" style="display: none;" accept="image/*">
+                <div class="content-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Service Name</label>
+                            <input type="text" class="form-input" placeholder="Enter service name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Service Icon</label>
+                            <div class="image-upload" onclick="this.querySelector('input').click()">
+                                <p>Click to upload service icon</p>
+                                <input type="file" style="display: none;" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input" placeholder="Enter service description"></textarea>
+                        </div>
                     </div>
                 </div>
             `;
             servicesList.appendChild(newService);
+            setupImagePreviews();
         }
 
+        // Add new portfolio project
         function addPortfolio() {
             const portfolioList = document.getElementById('portfolio-list');
             const newProject = document.createElement('div');
-            newProject.className = 'service-item';
+            newProject.className = 'portfolio-item';
             newProject.innerHTML = `
                 <button class="delete-btn" onclick="deletePortfolio(this)">🗑️ Delete</button>
-                <div class="form-group">
-                    <label class="form-label">Project Name</label>
-                    <input type="text" class="form-input" placeholder="Enter project name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Location</label>
-                    <input type="text" class="form-input" placeholder="Enter location">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-input" placeholder="Enter project description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Before Image</label>
-                    <div class="image-upload" onclick="this.querySelector('input').click()">
-                        <p>Click to upload before image</p>
-                        <input type="file" style="display: none;" accept="image/*">
+                <div class="content-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-input" placeholder="Enter project name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-input" placeholder="Enter location">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Project Description</label>
+                            <textarea class="form-input" placeholder="Describe the project"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">After Image</label>
-                    <div class="image-upload" onclick="this.querySelector('input').click()">
-                        <p>Click to upload after image</p>
-                        <input type="file" style="display: none;" accept="image/*">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Before Image</label>
+                            <div class="image-upload" onclick="this.querySelector('input').click()">
+                                <p>Click to upload before image</p>
+                                <input type="file" style="display: none;" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">After Image</label>
+                            <div class="image-upload" onclick="this.querySelector('input').click()">
+                                <p>Click to upload after image</p>
+                                <input type="file" style="display: none;" accept="image/*">
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
             portfolioList.appendChild(newProject);
+            setupImagePreviews();
         }
 
+        // Add new testimonial
         function addTestimonial() {
             const testimonialsList = document.getElementById('testimonials-list');
             const newTestimonial = document.createElement('div');
             newTestimonial.className = 'testimonial-item';
             newTestimonial.innerHTML = `
                 <button class="delete-btn" onclick="deleteTestimonial(this)">🗑️ Delete</button>
-                <div class="form-group">
-                    <label class="form-label">Customer Name</label>
-                    <input type="text" class="form-input" placeholder="Enter customer name">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Location</label>
-                    <input type="text" class="form-input" placeholder="Enter location">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Testimonial</label>
-                    <textarea class="form-input" placeholder="Enter testimonial text"></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Customer Photo</label>
-                    <div class="image-upload" onclick="this.querySelector('input').click()">
-                        <p>Click to upload customer photo</p>
-                        <input type="file" style="display: none;" accept="image/*">
+                <div class="content-grid">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Customer Name</label>
+                            <input type="text" class="form-input" placeholder="Enter customer name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-input" placeholder="Enter location">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Rating (1-5 stars)</label>
+                            <select class="form-input">
+                                <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                                <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                                <option value="3">⭐⭐⭐ (3 stars)</option>
+                                <option value="2">⭐⭐ (2 stars)</option>
+                                <option value="1">⭐ (1 star)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Customer Photo</label>
+                            <div class="image-upload" onclick="this.querySelector('input').click()">
+                                <p>Click to upload customer photo</p>
+                                <input type="file" style="display: none;" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Testimonial Text</label>
+                            <textarea class="form-input" placeholder="Enter customer testimonial"></textarea>
+                        </div>
                     </div>
                 </div>
             `;
             testimonialsList.appendChild(newTestimonial);
+            setupImagePreviews();
         }
 
         // Delete functions
@@ -741,22 +660,22 @@
             }
         }
 
-        // Utility functions
-        function showSuccessMessage(messageId) {
-            const message = document.getElementById(messageId);
-            message.style.display = 'block';
-            setTimeout(() => {
-                message.style.display = 'none';
-            }, 3000);
-        }
-
+        // Preview site function
         function previewSite() {
-            window.open('https://your-site.netlify.app', '_blank' );
+            window.open('https://finchs-gardening-website.netlify.app/', '_blank' );
         }
 
         // Initialize the CMS
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Finch\'s Gardening CMS loaded successfully!');
+            console.log('🌿 Finch\'s Gardening CMS loaded successfully!');
+            setupImagePreviews();
+            
+            // Test GitHub connection
+            if (typeof githubCMS !== 'undefined') {
+                console.log('✅ GitHub integration loaded');
+            } else {
+                console.log('❌ GitHub integration not found');
+            }
         });
     </script>
 </body>
