@@ -309,9 +309,9 @@ let githubCMS;
 
 // Configuration - This will be set up during installation
 const CMS_CONFIG = {
-    owner: 'YOUR_GITHUB_USERNAME',
-    repo: 'YOUR_REPOSITORY_NAME',
-    token: 'YOUR_GITHUB_TOKEN'
+    owner: ‘jagobanham’,
+    repo: 'finchs-gardening-website',
+    token: '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'
 };
 
 // Initialize when page loads
