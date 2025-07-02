@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finch's Gardening CMS - Complete Website Manager</title>
+    <title>Finch's Gardening CMS - Automatic Updates</title>
     <style>
         * {
             margin: 0;
@@ -12,138 +12,152 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2A5D3C 0%, #4A8C5F 100%);
+            min-height: 100vh;
             color: #333;
         }
 
+        .cms-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
         .cms-header {
-            background: #2A5D3C;
-            color: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: white;
+            padding: 25px 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
         }
 
-        .cms-header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
+        .cms-title {
+            color: #2A5D3C;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
-        .cms-header p {
-            opacity: 0.9;
-            margin-top: 0.5rem;
+        .cms-subtitle {
+            color: #666;
+            font-size: 1.1rem;
         }
 
         .status-indicator {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            margin-left: 10px;
+            margin-right: 8px;
         }
 
         .status-connected { background: #28a745; }
-        .status-disconnected { background: #dc3545; }
+        .status-error { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+        .status-updating { background: #007bff; animation: pulse 1s infinite; }
 
-        .cms-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         .cms-nav {
             background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 20px;
         }
 
-        .nav-buttons {
+        .nav-tabs {
             display: flex;
-            gap: 1rem;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
-        .nav-btn {
-            background: #4A8C5F;
-            color: white;
+        .nav-tab {
+            background: #f8f9fa;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            color: #666;
             transition: all 0.3s ease;
         }
 
-        .nav-btn:hover {
-            background: #3A7A4F;
-            transform: translateY(-2px);
+        .nav-tab.active {
+            background: linear-gradient(135deg, #4A8C5F 0%, #2A5D3C 100%);
+            color: white;
         }
 
-        .nav-btn.active {
-            background: #2A5D3C;
-            box-shadow: 0 4px 12px rgba(42, 93, 60, 0.3);
+        .nav-tab:hover:not(.active) {
+            background: #e9ecef;
         }
 
-        .cms-section {
+        .cms-content {
             background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .tab-content {
             display: none;
         }
 
-        .cms-section.active {
+        .tab-content.active {
             display: block;
         }
 
         .section-title {
             color: #2A5D3C;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #E8F5E8;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #F2C94C;
         }
 
-        .content-grid {
+        .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         .form-label {
             display: block;
             font-weight: 600;
             color: #2A5D3C;
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
 
         .form-input {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #E8F5E8;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            font-family: inherit;
         }
 
         .form-input:focus {
             outline: none;
             border-color: #4A8C5F;
+            box-shadow: 0 0 0 3px rgba(74, 140, 95, 0.1);
         }
 
         .form-textarea {
@@ -151,756 +165,799 @@
             resize: vertical;
         }
 
-        .image-upload {
-            border: 2px dashed #4A8C5F;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
+        .color-input {
+            height: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8fffe;
-        }
-
-        .image-upload:hover {
-            border-color: #2A5D3C;
-            background: #f0fff4;
-        }
-
-        .image-preview {
-            max-width: 200px;
-            max-height: 150px;
-            border-radius: 8px;
-            margin-top: 1rem;
         }
 
         .save-btn {
-            background: #28a745;
+            background: linear-gradient(135deg, #4A8C5F 0%, #2A5D3C 100%);
             color: white;
+            padding: 15px 30px;
             border: none;
-            padding: 1rem 2rem;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-right: 1rem;
+            margin-top: 20px;
+            margin-right: 15px;
         }
 
         .save-btn:hover {
-            background: #218838;
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(42, 93, 60, 0.3);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .preview-btn {
-            background: #007bff;
+            background: #6c757d;
             color: white;
+            padding: 15px 30px;
             border: none;
-            padding: 1rem 2rem;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 20px;
         }
 
         .preview-btn:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
+            background: #5a6268;
         }
 
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 1rem;
+        .message {
+            padding: 15px 20px;
             border-radius: 8px;
-            margin-bottom: 1.5rem;
-            border: 1px solid #c3e6cb;
+            margin-bottom: 20px;
+            font-weight: 500;
             display: none;
         }
 
-        .add-btn {
-            background: #17a2b8;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-bottom: 1rem;
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
-        .delete-btn {
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .service-item, .project-item, .testimonial-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: #2A5D3C;
+        }
+
+        .remove-btn {
             background: #dc3545;
             color: white;
             border: none;
-            padding: 0.25rem 0.5rem;
+            padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.8rem;
-            float: right;
+            font-size: 0.9rem;
         }
 
-        .service-item, .portfolio-item, .testimonial-item {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .color-input {
-            width: 60px;
-            height: 40px;
+        .add-btn {
+            background: #28a745;
+            color: white;
             border: none;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4A8C5F;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
-            .content-grid {
+            .form-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            .nav-buttons {
+            .nav-tabs {
                 flex-direction: column;
             }
             
             .cms-container {
-                padding: 0 1rem;
+                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <header class="cms-header">
-        <h1>🌿 Finch's Gardening Services - Complete Website Manager</h1>
-        <p>Edit every aspect of your website - content, links, images, and settings <span class="status-indicator"></span></p>
-    </header>
-
     <div class="cms-container">
-        <nav class="cms-nav">
-            <div class="nav-buttons">
-                <button class="nav-btn active" onclick="showSection('homepage')">🏠 Homepage</button>
-                <button class="nav-btn" onclick="showSection('about')">👥 About</button>
-                <button class="nav-btn" onclick="showSection('services')">🛠️ Services</button>
-                <button class="nav-btn" onclick="showSection('portfolio')">📸 Portfolio</button>
-                <button class="nav-btn" onclick="showSection('testimonials')">⭐ Testimonials</button>
-                <button class="nav-btn" onclick="showSection('contact')">📞 Contact</button>
-                <button class="nav-btn" onclick="showSection('settings')">⚙️ Settings</button>
-            </div>
-        </nav>
+        <!-- Header -->
+        <div class="cms-header">
+            <h1 class="cms-title">🌿 Finch's Gardening CMS</h1>
+            <p class="cms-subtitle">Complete Website Management - Automatic Updates</p>
+            <p>
+                <span class="status-indicator" id="status-indicator"></span>
+                <span id="status-text">Checking connection...</span>
+            </p>
+        </div>
 
-        <!-- Homepage Section -->
-        <section id="homepage" class="cms-section active">
-            <h2 class="section-title">Homepage Content</h2>
-            <div class="success-message" id="homepage-success">Changes saved successfully!</div>
-            
-            <div class="content-grid">
-                <div>
+        <!-- Navigation -->
+        <div class="cms-nav">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('homepage')">🏠 Homepage</button>
+                <button class="nav-tab" onclick="showTab('about')">👥 About</button>
+                <button class="nav-tab" onclick="showTab('services')">🛠️ Services</button>
+                <button class="nav-tab" onclick="showTab('portfolio')">📸 Portfolio</button>
+                <button class="nav-tab" onclick="showTab('testimonials')">⭐ Testimonials</button>
+                <button class="nav-tab" onclick="showTab('contact')">📞 Contact</button>
+                <button class="nav-tab" onclick="showTab('settings')">⚙️ Settings</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="cms-content">
+            <div class="message" id="message"></div>
+
+            <!-- Homepage Tab -->
+            <div id="homepage" class="tab-content active">
+                <h2 class="section-title">Homepage Content</h2>
+                
+                <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">Hero Title</label>
                         <input type="text" class="form-input" id="hero-title" value="Transforming Gardens, One Lawn at a Time">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Hero Subtitle</label>
-                        <input type="text" class="form-input" id="hero-subtitle" value="Professional gardening services in Surrey and surrounding areas">
-                    </div>
-
                     <div class="form-group">
                         <label class="form-label">CTA Button Text</label>
-                        <input type="text" class="form-input" id="cta-text" value="GET A FREE QUOTE">
+                        <input type="text" class="form-input" id="cta-text" value="Get a Free Quote">
                     </div>
-
+                    <div class="form-group full-width">
+                        <label class="form-label">Hero Subtitle</label>
+                        <textarea class="form-input form-textarea" id="hero-subtitle">Professional gardening services in Surrey. From lawn care to complete garden transformations, we bring your outdoor vision to life.</textarea>
+                    </div>
                     <div class="form-group">
                         <label class="form-label">CTA Button Link</label>
-                        <input type="url" class="form-input" id="cta-link" value="#contact">
+                        <input type="text" class="form-input" id="cta-link" value="#contact">
                     </div>
-                </div>
-
-                <div>
                     <div class="form-group">
-                        <label class="form-label">Hero Background Image</label>
-                        <div class="image-upload" onclick="document.getElementById('hero-image').click()">
-                            <p>Click to upload new hero image</p>
-                            <input type="file" id="hero-image" style="display: none;" accept="image/*" onchange="handleImageUpload(this, 'images/hero-garden.jpg')">
-                            <img id="hero-preview" class="image-preview" src="" style="display: none;">
-                        </div>
+                        <label class="form-label">Welcome Title</label>
+                        <input type="text" class="form-input" id="welcome-title" value="Welcome to Finch's Gardening Services">
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Welcome Content</label>
+                        <textarea class="form-input form-textarea" id="welcome-content">At Finch's Gardening Services, we're passionate about creating and maintaining beautiful outdoor spaces. With over 15 years of experience serving Surrey and the surrounding areas, our skilled team provides comprehensive gardening services tailored to your needs.</textarea>
                     </div>
                 </div>
+
+                <button class="save-btn" onclick="saveHomepage()">
+                    <span class="loading" id="homepage-loading" style="display: none;"></span>
+                    💾 Save Homepage
+                </button>
+                <button class="preview-btn" onclick="previewWebsite()">👁️ Preview Website</button>
             </div>
 
-            <div class="full-width">
-                <div class="form-group">
-                    <label class="form-label">Welcome Section Title</label>
-                    <input type="text" class="form-input" id="welcome-title" value="Welcome to Finch's Gardening Services">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Welcome Section Content</label>
-                    <textarea class="form-input form-textarea" id="welcome-content">At Finch's Gardening Services, we're passionate about creating and maintaining beautiful outdoor spaces. With over 15 years of experience serving Surrey and the surrounding areas, our team of skilled gardeners provides professional, reliable, and eco-friendly gardening solutions tailored to your specific needs.
-
-Whether you need regular lawn maintenance, a complete garden transformation, or seasonal clean-ups, we have the expertise and dedication to exceed your expectations and help your garden thrive.</textarea>
-                </div>
-            </div>
-
-            <button class="save-btn" onclick="saveHomepage()">💾 Save Homepage Changes</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="cms-section">
-            <h2 class="section-title">About Page Content</h2>
-            <div class="success-message" id="about-success">Changes saved successfully!</div>
-            
-            <div class="content-grid">
-                <div>
+            <!-- About Tab -->
+            <div id="about" class="tab-content">
+                <h2 class="section-title">About Page</h2>
+                
+                <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">Page Title</label>
-                        <input type="text" class="form-input" id="about-page-title" value="About Us">
+                        <input type="text" class="form-input" id="about-title" value="About Finch's Gardening Services">
                     </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Our Story Section Title</label>
-                        <input type="text" class="form-input" id="story-title" value="Our Story">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Founder Name</label>
-                        <input type="text" class="form-input" id="founder-name" value="James Finch">
-                    </div>
-
                     <div class="form-group">
                         <label class="form-label">Years of Experience</label>
-                        <input type="text" class="form-input" id="experience-years" value="15+ years">
+                        <input type="text" class="form-input" id="about-experience" value="15+ years">
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">About Content</label>
+                        <textarea class="form-input form-textarea" id="about-content">Founded in 2008, Finch's Gardening Services has been transforming outdoor spaces across Surrey for over 15 years. What started as a passion project has grown into a trusted local business, serving hundreds of satisfied customers.</textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">Mission Statement</label>
+                        <textarea class="form-input form-textarea" id="about-mission">Our mission is to create beautiful, sustainable outdoor spaces that bring joy to our clients and enhance their quality of life. We believe every garden has potential, and we're here to help it flourish.</textarea>
                     </div>
                 </div>
 
-                <div>
+                <button class="save-btn" onclick="saveAbout()">
+                    <span class="loading" id="about-loading" style="display: none;"></span>
+                    💾 Save About Page
+                </button>
+            </div>
+
+            <!-- Services Tab -->
+            <div id="services" class="tab-content">
+                <h2 class="section-title">Services Management</h2>
+                
+                <button class="add-btn" onclick="addService()">+ Add New Service</button>
+                
+                <div id="services-list">
+                    <!-- Services will be loaded here -->
+                </div>
+
+                <button class="save-btn" onclick="saveServices()">
+                    <span class="loading" id="services-loading" style="display: none;"></span>
+                    💾 Save Services
+                </button>
+            </div>
+
+            <!-- Portfolio Tab -->
+            <div id="portfolio" class="tab-content">
+                <h2 class="section-title">Portfolio Management</h2>
+                
+                <button class="add-btn" onclick="addProject()">+ Add New Project</button>
+                
+                <div id="portfolio-list">
+                    <!-- Portfolio items will be loaded here -->
+                </div>
+
+                <button class="save-btn" onclick="savePortfolio()">
+                    <span class="loading" id="portfolio-loading" style="display: none;"></span>
+                    💾 Save Portfolio
+                </button>
+            </div>
+
+            <!-- Testimonials Tab -->
+            <div id="testimonials" class="tab-content">
+                <h2 class="section-title">Testimonials Management</h2>
+                
+                <button class="add-btn" onclick="addTestimonial()">+ Add New Testimonial</button>
+                
+                <div id="testimonials-list">
+                    <!-- Testimonials will be loaded here -->
+                </div>
+
+                <button class="save-btn" onclick="saveTestimonials()">
+                    <span class="loading" id="testimonials-loading" style="display: none;"></span>
+                    💾 Save Testimonials
+                </button>
+            </div>
+
+            <!-- Contact Tab -->
+            <div id="contact" class="tab-content">
+                <h2 class="section-title">Contact Information</h2>
+                
+                <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Team Photo</label>
-                        <div class="image-upload" onclick="document.getElementById('team-image').click()">
-                            <p>Click to upload team photo</p>
-                            <input type="file" id="team-image" style="display: none;" accept="image/*" onchange="handleImageUpload(this, 'images/team-photo.jpg')">
-                            <img id="team-preview" class="image-preview" src="" style="display: none;">
-                        </div>
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-input" id="contact-phone" value="+44 1372 123456">
                     </div>
-                </div>
-            </div>
-
-            <div class="full-width">
-                <div class="form-group">
-                    <label class="form-label">Our Story Content</label>
-                    <textarea class="form-input form-textarea" id="story-content">Finch's Gardening Services was founded in 2010 by James Finch, a lifelong gardening enthusiast with a passion for creating beautiful outdoor spaces. What began as a one-man operation has grown into a trusted team of skilled gardeners serving Surrey and the surrounding areas.</textarea>
-                </div>
-            </div>
-
-            <button class="save-btn" onclick="saveAbout()">💾 Save About Page</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="cms-section">
-            <h2 class="section-title">Services Management</h2>
-            <div class="success-message" id="services-success">Changes saved successfully!</div>
-            
-            <button class="add-btn" onclick="addService()">➕ Add New Service</button>
-            
-            <div id="services-list">
-                <div class="service-item">
-                    <button class="delete-btn" onclick="deleteService(this)">🗑️ Delete</button>
-                    <div class="content-grid">
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Service Name</label>
-                                <input type="text" class="form-input" value="Lawn Mowing & Edging">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Service Icon</label>
-                                <div class="image-upload" onclick="this.querySelector('input').click()">
-                                    <p>Click to upload service icon</p>
-                                    <input type="file" style="display: none;" accept="image/*">
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-input">Keep your lawn looking pristine with our professional mowing and edging services, creating clean, defined borders and a perfectly manicured appearance.</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Learn More Link</label>
-                                <input type="url" class="form-input" value="#contact">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-item">
-                    <button class="delete-btn" onclick="deleteService(this)">🗑️ Delete</button>
-                    <div class="content-grid">
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Service Name</label>
-                                <input type="text" class="form-input" value="Hedge Trimming & Shaping">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Service Icon</label>
-                                <div class="image-upload" onclick="this.querySelector('input').click()">
-                                    <p>Click to upload service icon</p>
-                                    <input type="file" style="display: none;" accept="image/*">
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-input">Professional hedge trimming and topiary shaping services to maintain the structure and beauty of your garden boundaries and decorative plants.</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Learn More Link</label>
-                                <input type="url" class="form-input" value="#contact">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="save-btn" onclick="saveServices()">💾 Save Services</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
-
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="cms-section">
-            <h2 class="section-title">Portfolio Management</h2>
-            <div class="success-message" id="portfolio-success">Changes saved successfully!</div>
-            
-            <button class="add-btn" onclick="addPortfolio()">➕ Add New Project</button>
-            
-            <div id="portfolio-list">
-                <div class="portfolio-item">
-                    <button class="delete-btn" onclick="deletePortfolio(this)">🗑️ Delete</button>
-                    <div class="content-grid">
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Project Name</label>
-                                <input type="text" class="form-input" value="Garden Transformation">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Location</label>
-                                <input type="text" class="form-input" value="Leatherhead, Surrey">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Project Description</label>
-                                <textarea class="form-input">Complete garden makeover including lawn renovation, flower bed design, and pathway installation.</textarea>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Before Image</label>
-                                <div class="image-upload" onclick="this.querySelector('input').click()">
-                                    <p>Click to upload before image</p>
-                                    <input type="file" style="display: none;" accept="image/*">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">After Image</label>
-                                <div class="image-upload" onclick="this.querySelector('input').click()">
-                                    <p>Click to upload after image</p>
-                                    <input type="file" style="display: none;" accept="image/*">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="save-btn" onclick="savePortfolio()">💾 Save Portfolio</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="cms-section">
-            <h2 class="section-title">Testimonials Management</h2>
-            <div class="success-message" id="testimonials-success">Changes saved successfully!</div>
-            
-            <button class="add-btn" onclick="addTestimonial()">➕ Add New Testimonial</button>
-            
-            <div id="testimonials-list">
-                <div class="testimonial-item">
-                    <button class="delete-btn" onclick="deleteTestimonial(this)">🗑️ Delete</button>
-                    <div class="content-grid">
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Customer Name</label>
-                                <input type="text" class="form-input" value="Sarah Johnson">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Location</label>
-                                <input type="text" class="form-input" value="Epsom, Surrey">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Rating</label>
-                                <select class="form-input">
-                                    <option value="5" selected>⭐⭐⭐⭐⭐ (5 stars)</option>
-                                    <option value="4">⭐⭐⭐⭐ (4 stars)</option>
-                                    <option value="3">⭐⭐⭐ (3 stars)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label class="form-label">Customer Photo</label>
-                                <div class="image-upload" onclick="this.querySelector('input').click()">
-                                    <p>Click to upload customer photo</p>
-                                    <input type="file" style="display: none;" accept="image/*">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Testimonial Text</label>
-                                <textarea class="form-input">Absolutely fantastic service! James and his team transformed our garden beyond our expectations. Professional, reliable, and great value for money.</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="save-btn" onclick="saveTestimonials()">💾 Save Testimonials</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="cms-section">
-            <h2 class="section-title">Contact Information</h2>
-            <div class="success-message" id="contact-success">Changes saved successfully!</div>
-            
-            <div class="content-grid">
-                <div>
                     <div class="form-group">
-                        <label class="form-label">Business Phone</label>
-                        <input type="tel" class="form-input" id="contact-phone" value="+44 1372 123456">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Business Email</label>
+                        <label class="form-label">Email Address</label>
                         <input type="email" class="form-input" id="contact-email" value="info@finchsgardening.co.uk">
                     </div>
-
+                    <div class="form-group">
+                        <label class="form-label">Business Hours</label>
+                        <input type="text" class="form-input" id="contact-hours" value="Monday - Friday: 8:00 AM - 6:00 PM">
+                    </div>
                     <div class="form-group">
                         <label class="form-label">Service Area</label>
-                        <input type="text" class="form-input" id="service-area" value="Surrey and surrounding areas">
+                        <input type="text" class="form-input" id="contact-area" value="Surrey and surrounding areas">
                     </div>
-
-                    <div class="form-group">
+                    <div class="form-group full-width">
                         <label class="form-label">Business Address</label>
-                        <textarea class="form-input" id="business-address">123 Garden Lane
-Leatherhead, Surrey
-KT22 8AB</textarea>
+                        <textarea class="form-input" id="contact-address">123 Garden Lane, Leatherhead, Surrey KT22 8AB</textarea>
                     </div>
                 </div>
 
-                <div>
-                    <div class="form-group">
-                        <label class="form-label">Monday - Friday Hours</label>
-                        <input type="text" class="form-input" id="hours-weekdays" value="8:00 AM - 6:00 PM">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Saturday Hours</label>
-                        <input type="text" class="form-input" id="hours-saturday" value="8:00 AM - 4:00 PM">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Sunday Hours</label>
-                        <input type="text" class="form-input" id="hours-sunday" value="Closed">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Emergency Contact</label>
-                        <input type="tel" class="form-input" id="emergency-phone" value="+44 7700 123456">
-                    </div>
-                </div>
+                <button class="save-btn" onclick="saveContact()">
+                    <span class="loading" id="contact-loading" style="display: none;"></span>
+                    💾 Save Contact Info
+                </button>
             </div>
 
-            <button class="save-btn" onclick="saveContact()">💾 Save Contact Info</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
-
-        <!-- Settings Section -->
-        <section id="settings" class="cms-section">
-            <h2 class="section-title">Website Settings</h2>
-            <div class="success-message" id="settings-success">Changes saved successfully!</div>
-            
-            <div class="content-grid">
-                <div>
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <h2 class="section-title">Website Settings</h2>
+                
+                <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Primary Color</label>
+                        <label class="form-label">Primary Color (Main Green)</label>
                         <input type="color" class="form-input color-input" id="primary-color" value="#2A5D3C">
                     </div>
-
                     <div class="form-group">
-                        <label class="form-label">Secondary Color</label>
+                        <label class="form-label">Secondary Color (Light Green)</label>
                         <input type="color" class="form-input color-input" id="secondary-color" value="#4A8C5F">
                     </div>
-
                     <div class="form-group">
-                        <label class="form-label">Accent Color</label>
-                        <input type="color" class="form-input color-input" id="accent-color" value="#8FBC8F">
+                        <label class="form-label">Accent Color (Yellow)</label>
+                        <input type="color" class="form-input color-input" id="accent-color" value="#F2C94C">
                     </div>
-
                     <div class="form-group">
-                        <label class="form-label">Company Logo</label>
-                        <div class="image-upload" onclick="document.getElementById('logo-image').click()">
-                            <p>Click to upload new logo</p>
-                            <input type="file" id="logo-image" style="display: none;" accept="image/*" onchange="handleImageUpload(this, 'images/finchs-logo.png')">
-                        </div>
+                        <label class="form-label">Website Title</label>
+                        <input type="text" class="form-input" id="site-title" value="Finch's Gardening Services">
                     </div>
-                </div>
-
-                <div>
-                    <div class="form-group">
-                        <label class="form-label">Facebook Page URL</label>
-                        <input type="url" class="form-input" id="facebook-url" placeholder="https://facebook.com/finchsgardening">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Instagram Profile URL</label>
-                        <input type="url" class="form-input" id="instagram-url" placeholder="https://instagram.com/finchsgardening">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">TikTok Profile URL</label>
-                        <input type="url" class="form-input" id="tiktok-url" placeholder="https://tiktok.com/@finchsgardening">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Google My Business URL</label>
-                        <input type="url" class="form-input" id="google-business-url" placeholder="https://g.page/finchsgardening">
+                    <div class="form-group full-width">
+                        <label class="form-label">Meta Description</label>
+                        <textarea class="form-input" id="meta-description">Professional gardening services in Surrey. Expert lawn care, garden design, hedge trimming, and maintenance. Free quotes available.</textarea>
                     </div>
                 </div>
+
+                <button class="save-btn" onclick="saveSettings()">
+                    <span class="loading" id="settings-loading" style="display: none;"></span>
+                    💾 Save Settings
+                </button>
             </div>
-
-            <button class="save-btn" onclick="saveSettings()">💾 Save Website Settings</button>
-            <button class="preview-btn" onclick="previewSite()">👁️ Preview Live Site</button>
-        </section>
+        </div>
     </div>
 
     <script src="github-integration.js"></script>
     <script>
-        // Navigation between sections
-        function showSection(sectionId) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.cms-section');
-            sections.forEach(section => section.classList.remove('active'));
+        // Initialize CMS
+        let cms = null;
+        let currentServices = [];
+        let currentProjects = [];
+        let currentTestimonials = [];
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCMS();
+            loadDefaultServices();
+            loadDefaultProjects();
+            loadDefaultTestimonials();
+        });
+
+        function initializeCMS() {
+            cms = new AutomaticGitHubCMS();
+            updateStatus('connected', 'Connected to GitHub - Ready for automatic updates');
+        }
+
+        function updateStatus(type, message) {
+            const indicator = document.getElementById('status-indicator');
+            const text = document.getElementById('status-text');
             
-            // Remove active class from all nav buttons
-            const navButtons = document.querySelectorAll('.nav-btn');
-            navButtons.forEach(btn => btn.classList.remove('active'));
+            indicator.className = 'status-indicator status-' + type;
+            text.textContent = message;
+        }
+
+        function showMessage(type, text) {
+            const message = document.getElementById('message');
+            message.className = 'message ' + type;
+            message.textContent = text;
+            message.style.display = 'block';
             
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
             
-            // Add active class to clicked button
+            // Remove active class from all nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked nav tab
             event.target.classList.add('active');
         }
 
-        // Add new service
-        function addService() {
-            const servicesList = document.getElementById('services-list');
-            const newService = document.createElement('div');
-            newService.className = 'service-item';
-            newService.innerHTML = `
-                <button class="delete-btn" onclick="deleteService(this)">🗑️ Delete</button>
-                <div class="content-grid">
-                    <div>
-                        <div class="form-group">
-                            <label class="form-label">Service Name</label>
-                            <input type="text" class="form-input" placeholder="Enter service name">
+        async function saveHomepage() {
+            const loading = document.getElementById('homepage-loading');
+            const btn = event.target;
+            
+            try {
+                loading.style.display = 'inline-block';
+                btn.disabled = true;
+                updateStatus('updating', 'Updating homepage...');
+                
+                const data = {
+                    heroTitle: document.getElementById('hero-title').value,
+                    heroSubtitle: document.getElementById('hero-subtitle').value,
+                    ctaText: document.getElementById('cta-text').value,
+                    ctaLink: document.getElementById('cta-link').value,
+                    welcomeTitle: document.getElementById('welcome-title').value,
+                    welcomeContent: document.getElementById('welcome-content').value
+                };
+
+                await cms.updateHomepage(data);
+                
+                showMessage('success', '✅ Homepage updated successfully! Your live website has been updated automatically.');
+                updateStatus('connected', 'Homepage updated successfully');
+                
+            } catch (error) {
+                showMessage('error', '❌ Failed to update homepage: ' + error.message);
+                updateStatus('error', 'Update failed');
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        async function saveAbout() {
+            const loading = document.getElementById('about-loading');
+            const btn = event.target;
+            
+            try {
+                loading.style.display = 'inline-block';
+                btn.disabled = true;
+                updateStatus('updating', 'Updating about page...');
+                
+                const data = {
+                    aboutTitle: document.getElementById('about-title').value,
+                    aboutContent: document.getElementById('about-content').value,
+                    aboutExperience: document.getElementById('about-experience').value,
+                    aboutMission: document.getElementById('about-mission').value
+                };
+
+                await cms.updateAboutPage(data);
+                
+                showMessage('success', '✅ About page updated successfully!');
+                updateStatus('connected', 'About page updated successfully');
+                
+            } catch (error) {
+                showMessage('error', '❌ Failed to update about page: ' + error.message);
+                updateStatus('error', 'Update failed');
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        async function saveContact() {
+            const loading = document.getElementById('contact-loading');
+            const btn = event.target;
+            
+            try {
+                loading.style.display = 'inline-block';
+                btn.disabled = true;
+                updateStatus('updating', 'Updating contact information...');
+                
+                const data = {
+                    phone: document.getElementById('contact-phone').value,
+                    email: document.getElementById('contact-email').value,
+                    hours: document.getElementById('contact-hours').value,
+                    serviceArea: document.getElementById('contact-area').value,
+                    address: document.getElementById('contact-address').value
+                };
+
+                // Update homepage with contact info
+                await cms.updateHomepage(data);
+                
+                // Update contact page
+                await cms.updateContactPage(data);
+                
+                showMessage('success', '✅ Contact information updated on all pages!');
+                updateStatus('connected', 'Contact info updated successfully');
+                
+            } catch (error) {
+                showMessage('error', '❌ Failed to update contact info: ' + error.message);
+                updateStatus('error', 'Update failed');
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        async function saveSettings() {
+            const loading = document.getElementById('settings-loading');
+            const btn = event.target;
+            
+            try {
+                loading.style.display = 'inline-block';
+                btn.disabled = true;
+                updateStatus('updating', 'Updating website settings...');
+                
+                const data = {
+                    primaryColor: document.getElementById('primary-color').value,
+                    secondaryColor: document.getElementById('secondary-color').value,
+                    accentColor: document.getElementById('accent-color').value,
+                    siteTitle: document.getElementById('site-title').value,
+                    metaDescription: document.getElementById('meta-description').value
+                };
+
+                await cms.updateHomepage(data);
+                
+                showMessage('success', '✅ Website settings updated successfully!');
+                updateStatus('connected', 'Settings updated successfully');
+                
+            } catch (error) {
+                showMessage('error', '❌ Failed to update settings: ' + error.message);
+                updateStatus('error', 'Update failed');
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        function loadDefaultServices() {
+            currentServices = [
+                {
+                    title: 'Lawn Mowing & Edging',
+                    description: 'Professional lawn care to keep your grass healthy and your garden looking pristine.',
+                    icon: 'service-lawn.svg'
+                },
+                {
+                    title: 'Hedge Trimming & Shaping',
+                    description: 'Expert hedge trimming and topiary shaping to maintain structure and health.',
+                    icon: 'service-hedge.svg'
+                },
+                {
+                    title: 'Garden Design & Planting',
+                    description: 'Complete garden design and planting services to transform your outdoor space.',
+                    icon: 'service-design.svg'
+                }
+            ];
+            renderServices();
+        }
+
+        function loadDefaultProjects() {
+            currentProjects = [
+                {
+                    title: 'Modern Garden Transformation',
+                    location: 'Leatherhead, Surrey',
+                    description: 'Complete garden redesign with contemporary landscaping.',
+                    image: 'portfolio-1-after.jpg'
+                },
+                {
+                    title: 'Victorian Garden Restoration',
+                    location: 'Dorking, Surrey',
+                    description: 'Restoration of a beautiful Victorian-era garden.',
+                    image: 'portfolio-2-after.jpg'
+                }
+            ];
+            renderProjects();
+        }
+
+        function loadDefaultTestimonials() {
+            currentTestimonials = [
+                {
+                    name: 'Sarah Johnson',
+                    location: 'Leatherhead',
+                    rating: 5,
+                    text: 'James and his team transformed our garden beyond our wildest dreams. Their attention to detail and professional approach made the whole process stress-free.',
+                    image: 'testimonial-1.jpg'
+                },
+                {
+                    name: 'Michael Thompson',
+                    location: 'Dorking',
+                    rating: 5,
+                    text: 'Reliable, professional, and always on time. Finch\'s Gardening has been maintaining our lawn for over two years now, and it\'s never looked better.',
+                    image: 'testimonial-2.jpg'
+                }
+            ];
+            renderTestimonials();
+        }
+
+        function renderServices() {
+            const container = document.getElementById('services-list');
+            container.innerHTML = '';
+            
+            currentServices.forEach((service, index) => {
+                const serviceHtml = `
+                    <div class="service-item">
+                        <div class="item-header">
+                            <span class="item-title">Service ${index + 1}</span>
+                            <button class="remove-btn" onclick="removeService(${index})">Remove</button>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Service Icon</label>
-                            <div class="image-upload" onclick="this.querySelector('input').click()">
-                                <p>Click to upload service icon</p>
-                                <input type="file" style="display: none;" accept="image/*">
-                            </div>
+                            <label class="form-label">Service Title</label>
+                            <input type="text" class="form-input" value="${service.title}" onchange="updateService(${index}, 'title', this.value)">
                         </div>
-                    </div>
-                    <div>
                         <div class="form-group">
                             <label class="form-label">Description</label>
-                            <textarea class="form-input" placeholder="Enter service description"></textarea>
+                            <textarea class="form-input" onchange="updateService(${index}, 'description', this.value)">${service.description}</textarea>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Learn More Link</label>
-                            <input type="url" class="form-input" placeholder="#contact">
+                            <label class="form-label">Icon Filename</label>
+                            <input type="text" class="form-input" value="${service.icon}" onchange="updateService(${index}, 'icon', this.value)">
                         </div>
                     </div>
-                </div>
-            `;
-            servicesList.appendChild(newService);
+                `;
+                container.innerHTML += serviceHtml;
+            });
         }
 
-        // Add new portfolio project
-        function addPortfolio() {
-            const portfolioList = document.getElementById('portfolio-list');
-            const newProject = document.createElement('div');
-            newProject.className = 'portfolio-item';
-            newProject.innerHTML = `
-                <button class="delete-btn" onclick="deletePortfolio(this)">🗑️ Delete</button>
-                <div class="content-grid">
-                    <div>
+        function renderProjects() {
+            const container = document.getElementById('portfolio-list');
+            container.innerHTML = '';
+            
+            currentProjects.forEach((project, index) => {
+                const projectHtml = `
+                    <div class="project-item">
+                        <div class="item-header">
+                            <span class="item-title">Project ${index + 1}</span>
+                            <button class="remove-btn" onclick="removeProject(${index})">Remove</button>
+                        </div>
                         <div class="form-group">
-                            <label class="form-label">Project Name</label>
-                            <input type="text" class="form-input" placeholder="Enter project name">
+                            <label class="form-label">Project Title</label>
+                            <input type="text" class="form-input" value="${project.title}" onchange="updateProject(${index}, 'title', this.value)">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Location</label>
-                            <input type="text" class="form-input" placeholder="Enter location">
+                            <input type="text" class="form-input" value="${project.location}" onchange="updateProject(${index}, 'location', this.value)">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Project Description</label>
-                            <textarea class="form-input" placeholder="Describe the project"></textarea>
+                            <label class="form-label">Description</label>
+                            <textarea class="form-input" onchange="updateProject(${index}, 'description', this.value)">${project.description}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Image Filename</label>
+                            <input type="text" class="form-input" value="${project.image}" onchange="updateProject(${index}, 'image', this.value)">
                         </div>
                     </div>
-                    <div>
-                        <div class="form-group">
-                            <label class="form-label">Before Image</label>
-                            <div class="image-upload" onclick="this.querySelector('input').click()">
-                                <p>Click to upload before image</p>
-                                <input type="file" style="display: none;" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">After Image</label>
-                            <div class="image-upload" onclick="this.querySelector('input').click()">
-                                <p>Click to upload after image</p>
-                                <input type="file" style="display: none;" accept="image/*">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            portfolioList.appendChild(newProject);
+                `;
+                container.innerHTML += projectHtml;
+            });
         }
 
-        // Add new testimonial
-        function addTestimonial() {
-            const testimonialsList = document.getElementById('testimonials-list');
-            const newTestimonial = document.createElement('div');
-            newTestimonial.className = 'testimonial-item';
-            newTestimonial.innerHTML = `
-                <button class="delete-btn" onclick="deleteTestimonial(this)">🗑️ Delete</button>
-                <div class="content-grid">
-                    <div>
+        function renderTestimonials() {
+            const container = document.getElementById('testimonials-list');
+            container.innerHTML = '';
+            
+            currentTestimonials.forEach((testimonial, index) => {
+                const testimonialHtml = `
+                    <div class="testimonial-item">
+                        <div class="item-header">
+                            <span class="item-title">Testimonial ${index + 1}</span>
+                            <button class="remove-btn" onclick="removeTestimonial(${index})">Remove</button>
+                        </div>
                         <div class="form-group">
                             <label class="form-label">Customer Name</label>
-                            <input type="text" class="form-input" placeholder="Enter customer name">
+                            <input type="text" class="form-input" value="${testimonial.name}" onchange="updateTestimonial(${index}, 'name', this.value)">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Location</label>
-                            <input type="text" class="form-input" placeholder="Enter location">
+                            <input type="text" class="form-input" value="${testimonial.location}" onchange="updateTestimonial(${index}, 'location', this.value)">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Rating</label>
-                            <select class="form-input">
-                                <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
-                                <option value="4">⭐⭐⭐⭐ (4 stars)</option>
-                                <option value="3">⭐⭐⭐ (3 stars)</option>
-                                <option value="2">⭐⭐ (2 stars)</option>
-                                <option value="1">⭐ (1 star)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="form-group">
-                            <label class="form-label">Customer Photo</label>
-                            <div class="image-upload" onclick="this.querySelector('input').click()">
-                                <p>Click to upload customer photo</p>
-                                <input type="file" style="display: none;" accept="image/*">
-                            </div>
+                            <label class="form-label">Rating (1-5)</label>
+                            <input type="number" min="1" max="5" class="form-input" value="${testimonial.rating}" onchange="updateTestimonial(${index}, 'rating', this.value)">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Testimonial Text</label>
-                            <textarea class="form-input" placeholder="Enter customer testimonial"></textarea>
+                            <textarea class="form-input" onchange="updateTestimonial(${index}, 'text', this.value)">${testimonial.text}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Photo Filename</label>
+                            <input type="text" class="form-input" value="${testimonial.image}" onchange="updateTestimonial(${index}, 'image', this.value)">
                         </div>
                     </div>
-                </div>
-            `;
-            testimonialsList.appendChild(newTestimonial);
-        }
-
-        // Delete functions
-        function deleteService(button) {
-            if (confirm('Are you sure you want to delete this service?')) {
-                button.parentElement.remove();
-            }
-        }
-
-        function deletePortfolio(button) {
-            if (confirm('Are you sure you want to delete this project?')) {
-                button.parentElement.remove();
-            }
-        }
-
-        function deleteTestimonial(button) {
-            if (confirm('Are you sure you want to delete this testimonial?')) {
-                button.parentElement.remove();
-            }
-        }
-
-        // Preview site function
-        function previewSite() {
-            window.open('https://finchs-gardening-website.netlify.app/', '_blank');
-        }
-
-        // Placeholder save functions for sections not yet implemented
-        function saveServices() {
-            showLoadingMessage('services-success', '⏳ Updating services...');
-            setTimeout(() => {
-                showSuccessMessage('services-success', '✅ Services updated successfully!');
-            }, 1000);
-        }
-
-        function savePortfolio() {
-            showLoadingMessage('portfolio-success', '⏳ Updating portfolio...');
-            setTimeout(() => {
-                showSuccessMessage('portfolio-success', '✅ Portfolio updated successfully!');
-            }, 1000);
-        }
-
-        function saveTestimonials() {
-            showLoadingMessage('testimonials-success', '⏳ Updating testimonials...');
-            setTimeout(() => {
-                showSuccessMessage('testimonials-success', '✅ Testimonials updated successfully!');
-            }, 1000);
-        }
-
-        // Initialize the CMS
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🌿 Complete Finch\'s Gardening CMS loaded successfully!');
-            
-            // Setup image preview functionality
-            const imageInputs = document.querySelectorAll('input[type="file"]');
-            imageInputs.forEach(input => {
-                input.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const container = input.closest('.image-upload');
-                            let preview = container.querySelector('.image-preview');
-                            if (!preview) {
-                                preview = document.createElement('img');
-                                preview.className = 'image-preview';
-                                container.appendChild(preview);
-                            }
-                            preview.src = e.target.result;
-                            preview.style.display = 'block';
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
+                `;
+                container.innerHTML += testimonialHtml;
             });
-        });
+        }
+
+        function addService() {
+            currentServices.push({
+                title: 'New Service',
+                description: 'Service description',
+                icon: 'service-icon.svg'
+            });
+            renderServices();
+        }
+
+        function addProject() {
+            currentProjects.push({
+                title: 'New Project',
+                location: 'Location',
+                description: 'Project description',
+                image: 'project-image.jpg'
+            });
+            renderProjects();
+        }
+
+        function addTestimonial() {
+            currentTestimonials.push({
+                name: 'Customer Name',
+                location: 'Location',
+                rating: 5,
+                text: 'Testimonial text',
+                image: 'customer-photo.jpg'
+            });
+            renderTestimonials();
+        }
+
+        function removeService(index) {
+            currentServices.splice(index, 1);
+            renderServices();
+        }
+
+        function removeProject(index) {
+            currentProjects.splice(index, 1);
+            renderProjects();
+        }
+
+        function removeTestimonial(index) {
+            currentTestimonials.splice(index, 1);
+            renderTestimonials();
+        }
+
+        function updateService(index, field, value) {
+            currentServices[index][field] = value;
+        }
+
+        function updateProject(index, field, value) {
+            currentProjects[index][field] = value;
+        }
+
+        function updateTestimonial(index, field, value) {
+            currentTestimonials[index][field] = value;
+        }
+
+        async function saveServices() {
+            const loading = document.getElementById('services-loading');
+            const btn = event.target;
+            
+            try {
+                loading.style.display = 'inline-block';
+                btn.disabled = true;
+                updateStatus('updating', 'Updating services...');
+                
+                await cms.updateServicesPage(currentServices);
+                
+                showMessage('success', '✅ Services updated successfully!');
+                updateStatus('connected', 'Services updated successfully');
+                
+            } catch (error) {
+                showMessage('error', '❌ Failed to update services: ' + error.message);
+                updateStatus('error', 'Update failed');
+            } finally {
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }
+        }
+
+        async function savePortfolio() {
+            showMessage('info', 'Portfolio management coming soon! For now, you can edit portfolio images manually in the GitHub repository.');
+        }
+
+        async function saveTestimonials() {
+            showMessage('info', 'Testimonials management coming soon! For now, you can edit testimonials manually in the GitHub repository.');
+        }
+
+        function previewWebsite() {
+            window.open('https://jagobanham.github.io/finchs-gardening-website/', '_blank');
+        }
     </script>
 </body>
 </html>
